@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS expenses (
     id     SERIAL PRIMARY KEY,
     date   TEXT NOT NULL,
     cat    TEXT NOT NULL,
-    desc   TEXT DEFAULT '',
+    description TEXT DEFAULT '',
     amount REAL NOT NULL DEFAULT 0
 );
 

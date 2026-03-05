@@ -116,7 +116,7 @@ class SaleCreate(BaseModel):
 class ExpenseCreate(BaseModel):
     date: str
     cat: str
-    desc: str = ""
+    description: str = ""
     amount: float = Field(..., ge=0)
 
 
@@ -431,8 +431,8 @@ def create_expense(body: ExpenseCreate):
     with conn:
         cur = execute(
             conn,
-            "INSERT INTO expenses (date,cat,desc,amount) VALUES (?,?,?,?) RETURNING id",
-            (body.date, body.cat, body.desc, body.amount),
+            "INSERT INTO expenses (date,cat,description,amount) VALUES (?,?,?,?) RETURNING id",
+            (body.date, body.cat, body.description, body.amount),
         )
         new_id = cur.fetchone()["id"]
     row = execute(conn, "SELECT * FROM expenses WHERE id=?", (new_id,)).fetchone()
@@ -600,9 +600,9 @@ def import_all(body: ImportData):
             for e in body.expenses:
                 execute(
                     conn,
-                    "INSERT INTO expenses (id,date,cat,desc,amount) VALUES (?,?,?,?,?)",
+                    "INSERT INTO expenses (id,date,cat,description,amount) VALUES (?,?,?,?,?)",
                     (e.get("id"), e.get("date", ""), e.get("cat", ""),
-                     e.get("desc", ""), e.get("amount", 0)),
+                     e.get("description", e.get("desc", "")), e.get("amount", 0)),
                 )
 
         if body.settings:
